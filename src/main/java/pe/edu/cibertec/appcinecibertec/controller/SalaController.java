@@ -28,7 +28,7 @@ public class SalaController {
 	@GetMapping("/frmsala")
 	public String frmMantSala(Model model) {
 		
-		model.addAttribute("listaSala", salaService.listarSala());
+		model.addAttribute("listasalas", salaService.listarSala());
 		return "sala/frmMantSala";
 	}
 	
