@@ -14,9 +14,7 @@ import pe.edu.cibertec.appcinecibertec.service.EstadoService;
 @Controller
 @RequestMapping("/Estado")
 public class EstadoController {
-	
-	
-
+		
 	@Autowired
 	private EstadoService estadoService;
 	
