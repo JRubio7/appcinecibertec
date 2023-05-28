@@ -27,21 +27,20 @@ public class SalaController {
 	
 	@GetMapping("/frmsala")
 	public String frmMantSala(Model model) {
-		
-		model.addAttribute("listasalas", salaService.listarSala());
-		return "sala/frmMantSala";
+		model.addAttribute("listasalas", 
+				salaService.listarSala());
+		return "sala/frmsala";
 	}
 	
 	@PostMapping("/registrarSala")
-	@ResponseBody //indica que va a devolver un objeto usando AJAX
+	@ResponseBody
 	public ResultadoResponse registrarSala(
 			@RequestBody SalaRequest salaRequest
-			){
-		
-		String mensaje = "Sala registrada correctamente";
+			) {
+		String mensaje ="Sala registrada correctamente";
 		Boolean respuesta = true;
-		
-		try {
+		try {			
+			//Se puede aplicar el patrón Builder en estos objetos
 			Sala objSala = new Sala();
 			if(salaRequest.getIdsala() > 0) {
 				objSala.setIdsala(salaRequest.getIdsala());
@@ -49,41 +48,44 @@ public class SalaController {
 			objSala.setDescsala(salaRequest.getDescsala());
 			objSala.setAsientos(salaRequest.getAsientos());
 			Estado objEstado = new Estado();
-			objEstado.setIdEstado(salaRequest.getIdestado());
+			objEstado.setIdestado(salaRequest.getIdestado());
 			objSala.setEstado(objEstado);
 			salaService.registrarSala(objSala);
-
-		}catch(Exception ex){
+		}catch(Exception ex) {
 			mensaje = "Sala no registrada";
 			respuesta = false;
 		}
-		return ResultadoResponse.builder().mensaje(mensaje).respuesta(respuesta).build();
+		return ResultadoResponse.builder()
+				.mensaje(mensaje)
+				.respuesta(respuesta)
+				.build();
 	}
 	
 	@DeleteMapping("/eliminarSala")
 	@ResponseBody
-	public ResultadoResponse eliminarSala(
-			@RequestBody
+	public ResultadoResponse eliminarSala(@RequestBody
 			SalaRequest salaRequest) {
-		
 		String mensaje = "Sala eliminada correctamente";
 		Boolean respuesta = true;
-		
 		try {
-			salaService.eliminarSala(salaRequest.getIdestado());
-		} catch (Exception e) {
+			salaService.eliminarSala(salaRequest.getIdsala());
+		}catch (Exception e) {
 			mensaje = "Sala no eliminada";
 			respuesta = false;
 		}
-		return ResultadoResponse.builder().mensaje(mensaje).respuesta(respuesta).build();
-		
+		return ResultadoResponse.builder()
+				.mensaje(mensaje)
+				.respuesta(respuesta)
+				.build();
 	}
-	
-	@GetMapping("listarSalas")
+	@GetMapping("/listarSalas")
 	@ResponseBody
 	public List<Sala> listarSalas(){
 		return salaService.listarSala();
 	}
+	
+	
+	
 	
 
 }
